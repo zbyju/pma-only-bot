@@ -1,41 +1,30 @@
 require('dotenv').config()
 import Discord from "discord.js"
-const fetchAll = require('discord-fetch-all');
+import mongoose from "mongoose"
+import dbConfig from "../config/database.json"
+import { BotInitialization } from "./init"
 
 const client = new Discord.Client({
   intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.DIRECT_MESSAGES]
 })
 
+const botInit = new BotInitialization(client)
+
+//Connect to MongoDB
+mongoose.connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.name}`,
+    dbConfig.options, (err) => {
+  if(err) {
+    console.error(err)
+  } else {
+    console.log("Connected to MongoDB")
+  }
+});
+
 client.once("ready", async () => {
   console.log("POB is ready!")
-
-  const guildId = process.env.TEST_GUILD_ID || ""
-  const guild = client.guilds.cache.get(guildId)
-  const commands = guild ? guild.commands : client.application?.commands
-
-  commands?.create({
-    name: "ping",
-    description: "Replies with pong."
-  })
-
-  const channel = client.channels.cache.get(process.env.TEST_CHANNEL_ID || "")
-  const allMessages = await fetchAll.messages(channel, {
-    reverseArray: true, // Reverse the returned array
-    userOnly: true, // Only return messages by users
-    botOnly: false, // Only return messages by bots
-    pinnedOnly: false, // Only returned pinned messages
-  });
-  console.log(allMessages.map((m: any) => {
-    return m.author.username + " - " + m.content + "\n"
-  }))
+  botInit.init()
 })
 
-client.on("interactionCreate", async interaction => {
-  if(!interaction.isCommand()) return;
-
-  if(interaction.commandName === "ping") {
-    await interaction.reply("Pong!")
-  }
-})
+client.on('interactionCreate', interaction => botInit.onMessage(interaction));
 
 client.login(process.env.TOKEN || "")
