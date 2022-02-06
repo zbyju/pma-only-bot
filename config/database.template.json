@@ -1,0 +1,15 @@
+{
+    "host": "host",
+    "port": "27017",
+    "name": "name",
+    "options": {
+        "authSource": "username",
+        "auth": {
+            "username": "username",
+            "password": "password"
+        },
+        "useNewUrlParser": true,
+        "useUnifiedTopology": true,
+        "autoIndex": true
+    }
+}
