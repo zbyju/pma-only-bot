@@ -2,6 +2,7 @@ import Discord from "discord.js"
 import cron from "node-cron"
 import GMSender from "./modules/gm-module/gm-sender"
 import BatChestSender from "./modules/bat-chest-module/bat-chest-sender"
+import MessageSaver from "./modules/message-saver/message-saver"
 
 export default class BotInitialization {
     client: Discord.Client<boolean>
@@ -9,11 +10,13 @@ export default class BotInitialization {
     //Modules:
     gmSender: GMSender
     batChestSender: BatChestSender
+    messageSaver: MessageSaver
 
     constructor(client: Discord.Client<boolean>) {
         this.client = client
         this.gmSender = new GMSender(client)
         this.batChestSender = new BatChestSender(client)
+        this.messageSaver = new MessageSaver(client)
     }
 
     init() {
@@ -47,8 +50,9 @@ export default class BotInitialization {
     }
     
     initCron() {
+        this.messageSaver.saveMessagesFromAll()
         cron.schedule('* 5 5 * * *', () => {
-
+            this.messageSaver.saveMessagesFromAll()
         })
     }
 }
