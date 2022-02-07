@@ -1,6 +1,6 @@
 import Discord from "discord.js"
 import cron from "node-cron"
-import GMSender from "./modules/gm-module/GMSender"
+import GMSender from "./modules/gm-module/gm-sender"
 
 export default class BotInitialization {
     client: Discord.Client<boolean>

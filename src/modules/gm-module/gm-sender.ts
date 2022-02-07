@@ -1,5 +1,5 @@
 import Discord from "discord.js";
-import BaseModule from "../BaseModule"
+import BaseModule from "../base-module"
 
 export default class GMSender extends BaseModule {
     constructor(client: Discord.Client<boolean>) {
