@@ -1,16 +1,19 @@
 import Discord from "discord.js"
 import cron from "node-cron"
 import GMSender from "./modules/gm-module/gm-sender"
+import BatChestSender from "./modules/bat-chest-module/bat-chest-sender"
 
 export default class BotInitialization {
     client: Discord.Client<boolean>
 
     //Modules:
     gmSender: GMSender
+    batChestSender: BatChestSender
 
     constructor(client: Discord.Client<boolean>) {
         this.client = client
         this.gmSender = new GMSender(client)
+        this.batChestSender = new BatChestSender(client)
     }
 
     init() {
@@ -29,6 +32,7 @@ export default class BotInitialization {
     onMessage(message: Discord.Message<boolean>) {
         console.log(message.content)
         this.gmSender.onMessage(message)
+        this.batChestSender.onMessage(message)
     }
     
     initCommands() {
