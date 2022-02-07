@@ -2,10 +2,10 @@ require('dotenv').config()
 import Discord from "discord.js"
 import mongoose from "mongoose"
 import dbConfig from "../config/database.json"
-import { BotInitialization } from "./init"
+import BotInitialization from "./init"
 
 const client = new Discord.Client({
-  intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.DIRECT_MESSAGES]
+  intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.DIRECT_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGES]
 })
 
 const botInit = new BotInitialization(client)
@@ -25,6 +25,11 @@ client.once("ready", async () => {
   botInit.init()
 })
 
-client.on('interactionCreate', interaction => botInit.onMessage(interaction));
+client.on('interactionCreate', interaction => botInit.onCommand(interaction));
+
+client.on('messageCreate', message => {
+  if(message.author.bot) return;
+  botInit.onMessage(message)
+});
 
 client.login(process.env.TOKEN || "")

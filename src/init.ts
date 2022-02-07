@@ -1,9 +1,16 @@
 import Discord from "discord.js"
+import cron from "node-cron"
+import GMSender from "./modules/gm-module/GMSender"
 
-export class BotInitialization {
+export default class BotInitialization {
     client: Discord.Client<boolean>
+
+    //Modules:
+    gmSender: GMSender
+
     constructor(client: Discord.Client<boolean>) {
         this.client = client
+        this.gmSender = new GMSender(client)
     }
 
     init() {
@@ -11,12 +18,17 @@ export class BotInitialization {
         this.initCron()
     }
     
-    async onMessage(interaction: Discord.Interaction<Discord.CacheType>) {
+    async onCommand(interaction: Discord.Interaction<Discord.CacheType>) {
         if(!interaction.isCommand()) return;
     
         if(interaction.commandName === "ping") {
             await interaction.reply("Pong!")
         }
+    }
+
+    onMessage(message: Discord.Message<boolean>) {
+        console.log(message.content)
+        this.gmSender.onMessage(message)
     }
     
     initCommands() {
@@ -31,7 +43,9 @@ export class BotInitialization {
     }
     
     initCron() {
-        
+        cron.schedule('* 5 5 * * *', () => {
+
+        })
     }
 }
 
