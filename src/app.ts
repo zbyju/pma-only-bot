@@ -8,8 +8,6 @@ const client = new Discord.Client({
   intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.DIRECT_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGES]
 })
 
-const botInit = new BotInitialization(client)
-
 //Connect to MongoDB
 mongoose.connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.name}`,
     dbConfig.options, (err) => {
@@ -22,14 +20,15 @@ mongoose.connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.name}`,
 
 client.once("ready", async () => {
   console.log("POB is ready!")
+  const botInit = new BotInitialization(client)
   botInit.init()
+
+  client.on('interactionCreate', interaction => botInit.onCommand(interaction));
+
+  client.on('messageCreate', message => {
+    if(message.author.bot) return;
+    botInit.onMessage(message)
+  });
 })
-
-client.on('interactionCreate', interaction => botInit.onCommand(interaction));
-
-client.on('messageCreate', message => {
-  if(message.author.bot) return;
-  botInit.onMessage(message)
-});
 
 client.login(process.env.TOKEN || "")
