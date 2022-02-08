@@ -23,11 +23,11 @@ export default class BotInitialization {
         this.initCommands()
         this.initCron()
     }
-    
+
     async onCommand(interaction: Discord.Interaction<Discord.CacheType>) {
-        if(!interaction.isCommand()) return;
-    
-        if(interaction.commandName === "ping") {
+        if (!interaction.isCommand()) return
+
+        if (interaction.commandName === "ping") {
             await interaction.reply("Pong!")
         }
     }
@@ -37,23 +37,23 @@ export default class BotInitialization {
         this.gmSender.onMessage(message)
         this.batChestSender.onMessage(message)
     }
-    
+
     initCommands() {
         const guildId = process.env.TEST_GUILD_ID || ""
         const guild = this.client.guilds.cache.get(guildId)
-        const commands = guild ? guild.commands : this.client.application?.commands
-    
+        const commands = guild
+            ? guild.commands
+            : this.client.application?.commands
+
         commands?.create({
             name: "ping",
-            description: "Replies with pong."
+            description: "Replies with pong.",
         })
     }
-    
+
     initCron() {
-        cron.schedule('* 5 5 * * *', () => {
+        cron.schedule("* 5 5 * * *", () => {
             this.messageSaver.saveMessagesFromAll()
         })
     }
 }
-
-

@@ -10,20 +10,23 @@ export const saveMessage = (m: Discord.Message) => {
         channel: m.channelId,
         guild: m.guildId,
         postedAt: m.createdTimestamp,
-        msgId: m.id
+        msgId: m.id,
     })
 }
 
 export const saveMessagePOB = (message: POBMessage) => {
     return new Promise((resolve, reject) => {
         try {
-            MessageModel.create(message, (err: CallbackError, m: POBMessage) => {
-                if(err) {
-                    reject(err)
+            MessageModel.create(
+                message,
+                (err: CallbackError, m: POBMessage) => {
+                    if (err) {
+                        reject(err)
+                    }
+                    resolve(m)
                 }
-                resolve(m)
-            })
-        } catch(err) {
+            )
+        } catch (err) {
             reject(err)
         }
     })
