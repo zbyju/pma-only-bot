@@ -16,6 +16,6 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
-        "no-constant-condition": false
+        "no-constant-condition": ["error", { "checkLoops": false }]
     }
 }
