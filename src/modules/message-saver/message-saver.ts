@@ -14,7 +14,7 @@ export default class MessageSaver extends BaseModule {
     }
 
     saveMessagesFromAll() {
-        this.savings.forEach(s => {
+        this.savings.forEach((s) => {
             this.saveMessagesFromChannelAfter(s.channelID, s.lastID)
             console.log(`Done saving - ${s}`)
         })
@@ -22,22 +22,34 @@ export default class MessageSaver extends BaseModule {
 
     async saveMessagesFromChannelAfter(channelID: string, after: string) {
         const channel = this.client.channels.cache.get(channelID)
-        if(!(channel instanceof TextChannel)) return
+        if (!(channel instanceof TextChannel)) return
         let lastID: string = after
 
-        while(true) {
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
             try {
                 const messages = await fetchMessagesAfter(channel, lastID, 100)
-                if(messages.size === 0) return
+                if (messages.size === 0) return
 
-                messages.forEach(m => {
-                    if(m.author.bot || m.system || m.content === "" || !m.content) return
+                messages.forEach((m) => {
+                    if (
+                        m.author.bot ||
+                        m.system ||
+                        m.content === "" ||
+                        !m.content
+                    )
+                        return
                     try {
                         saveMessage(m)
-                    } catch(err) { console.log(err) }
+                    } catch (err) {
+                        console.log(err)
+                    }
                 })
                 lastID = messages.firstKey()
-            } catch(err) { console.error(err); return }
+            } catch (err) {
+                console.error(err)
+                return
+            }
         }
     }
 }

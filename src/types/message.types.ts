@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { Types } from "mongoose"
 
 export interface POBMessage {
     author: string
@@ -15,7 +15,7 @@ export interface POBMessage {
 }
 
 export interface Saving {
-    lastID: string,
-    channelID: string,
+    lastID: string
+    channelID: string
     guildID: string
 }
