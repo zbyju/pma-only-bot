@@ -3,7 +3,7 @@
     "port": "27017",
     "name": "name",
     "options": {
-        "authSource": "username",
+        "authSource": "admin",
         "auth": {
             "username": "username",
             "password": "password"

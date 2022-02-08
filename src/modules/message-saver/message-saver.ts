@@ -13,9 +13,9 @@ export default class MessageSaver extends BaseModule {
     }
 
     saveMessagesFromAll() {
-        console.log("SAVING MESSAGES")
         this.savings.forEach((s) => {
             this.saveMessagesFromChannelAfter(s.channelID, s.lastID)
+            console.log(`Done saving - ${s}`)
         })
     }
 
@@ -47,7 +47,7 @@ export default class MessageSaver extends BaseModule {
                 lastID = messages.firstKey()
             } catch (err) {
                 console.error(err)
-                return []
+                return
             }
         }
     }
