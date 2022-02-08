@@ -5,6 +5,7 @@ import { Saving } from "../../types/message.types"
 import BaseModule from "../base-module"
 
 export default class MessageSaver extends BaseModule {
+    moduleName = "MessageSaverModule"
     savings: Saving[]
 
     constructor(client: Discord.Client<boolean>) {
