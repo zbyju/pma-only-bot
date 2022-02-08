@@ -2,6 +2,7 @@ import Discord from "discord.js"
 import BaseModule from "./base-module"
 
 export default abstract class CronModule extends BaseModule {
+    moduleName = "CronModule"
     client: Discord.Client<boolean>
 
     // Schedule for node-cron (https://www.npmjs.com/package/node-cron)
