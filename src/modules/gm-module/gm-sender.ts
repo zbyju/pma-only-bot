@@ -1,4 +1,4 @@
-import Discord from "discord.js";
+import Discord from "discord.js"
 import BaseModule from "../base-module"
 
 export default class GMSender extends BaseModule {
@@ -7,7 +7,7 @@ export default class GMSender extends BaseModule {
     }
 
     onMessage(message: Discord.Message<boolean>) {
-        if(message.content.trim().toLowerCase() === "gm") {
+        if (message.content.trim().toLowerCase() === "gm") {
             message.reply("gm")
         }
     }
