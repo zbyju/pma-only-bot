@@ -6,6 +6,7 @@ import BaseModule from "../base-module"
 import Log from "./../../log"
 
 export default class MessageSaver extends BaseModule {
+    moduleName = "MessageSaverModule"
     savings: Saving[]
 
     constructor(client: Discord.Client<boolean>) {

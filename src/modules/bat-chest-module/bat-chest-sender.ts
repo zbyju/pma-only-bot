@@ -2,6 +2,7 @@ import Discord from "discord.js"
 import BaseModule from "../base-module"
 
 export default class BatChestSender extends BaseModule {
+    moduleName = "BatChestModule"
     batchest: Discord.GuildEmoji
 
     constructor(client: Discord.Client<boolean>) {

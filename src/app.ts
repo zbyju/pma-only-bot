@@ -3,8 +3,8 @@ require("dotenv").config()
 import Discord from "discord.js"
 import mongoose from "mongoose"
 import dbConfig from "../config/database.json"
-import BotInitialization from "./init"
 import Log from "./log"
+import BotInitialization from "./bot-initialization"
 
 const client = new Discord.Client({
     intents: [
