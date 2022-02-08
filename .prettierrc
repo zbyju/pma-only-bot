@@ -4,5 +4,7 @@
     "tabWidth": 4,
     "useTabs": false,
     "bracketSameLine": true,
-    "printWidth": 80
+    "trailingComma": "es5",
+    "printWidth": 80,
+    "endOfLine": "lf"
   }
