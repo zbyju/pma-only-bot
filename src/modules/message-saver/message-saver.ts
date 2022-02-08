@@ -36,7 +36,7 @@ export default class MessageSaver extends CronModule {
                 const messages = await fetchMessagesAfter(channel, lastID, 100)
                 if (messages.size === 0) return
 
-                messages.forEach((m) => {
+                messages.forEach(async (m) => {
                     if (
                         m.author.bot ||
                         m.system ||
@@ -45,7 +45,7 @@ export default class MessageSaver extends CronModule {
                     )
                         return
                     try {
-                        saveMessage(m)
+                        await saveMessage(m)
                     } catch (err) {
                         console.log(err)
                     }

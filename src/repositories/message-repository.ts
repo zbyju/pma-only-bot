@@ -14,7 +14,7 @@ export const saveMessage = (m: Discord.Message) => {
     })
 }
 
-export const saveMessagePOB = (message: POBMessage) => {
+export const saveMessagePOB = (message: POBMessage): Promise<POBMessage> => {
     return new Promise((resolve, reject) => {
         try {
             MessageModel.create(
@@ -22,8 +22,9 @@ export const saveMessagePOB = (message: POBMessage) => {
                 (err: CallbackError, m: POBMessage) => {
                     if (err) {
                         reject(err)
+                    } else {
+                        resolve(m)
                     }
-                    resolve(m)
                 }
             )
         } catch (err) {
