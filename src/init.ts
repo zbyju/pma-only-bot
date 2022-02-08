@@ -50,7 +50,6 @@ export default class BotInitialization {
     }
     
     initCron() {
-        this.messageSaver.saveMessagesFromAll()
         cron.schedule('* 5 5 * * *', () => {
             this.messageSaver.saveMessagesFromAll()
         })
