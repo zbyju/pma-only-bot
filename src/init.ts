@@ -1,57 +1,32 @@
 import Discord from "discord.js"
 import cron from "node-cron"
-import GMSender from "./modules/gm-module/gm-sender"
-import BatChestSender from "./modules/bat-chest-module/bat-chest-sender"
-import MessageSaver from "./modules/message-saver/message-saver"
+import ModuleRegisterer from "./modules/module-registerer"
 
 export default class BotInitialization {
     client: Discord.Client<boolean>
-
-    //Modules:
-    gmSender: GMSender
-    batChestSender: BatChestSender
-    messageSaver: MessageSaver
+    registerer: ModuleRegisterer
 
     constructor(client: Discord.Client<boolean>) {
         this.client = client
-        this.gmSender = new GMSender(client)
-        this.batChestSender = new BatChestSender(client)
-        this.messageSaver = new MessageSaver(client)
+        this.registerer = new ModuleRegisterer(client)
     }
 
     init() {
-        this.initCommands()
-        this.initCron()
+        this.initCronJobs()
     }
     
-    async onCommand(interaction: Discord.Interaction<Discord.CacheType>) {
+    onCommand(interaction: Discord.Interaction<Discord.CacheType>) {
         if(!interaction.isCommand()) return;
-    
-        if(interaction.commandName === "ping") {
-            await interaction.reply("Pong!")
-        }
+        this.registerer.commandModules.forEach(m => m.onCommand(interaction))
     }
 
     onMessage(message: Discord.Message<boolean>) {
-        console.log(message.content)
-        this.gmSender.onMessage(message)
-        this.batChestSender.onMessage(message)
+        this.registerer.messageModules.forEach(m => m.onMessage(message))
     }
-    
-    initCommands() {
-        const guildId = process.env.TEST_GUILD_ID || ""
-        const guild = this.client.guilds.cache.get(guildId)
-        const commands = guild ? guild.commands : this.client.application?.commands
-    
-        commands?.create({
-            name: "ping",
-            description: "Replies with pong."
-        })
-    }
-    
-    initCron() {
-        cron.schedule('* 5 5 * * *', () => {
-            this.messageSaver.saveMessagesFromAll()
+
+    initCronJobs() {
+        this.registerer.cronModules.forEach(m => {
+            cron.schedule(m.schedule, m.onCron)
         })
     }
 }
