@@ -11,7 +11,7 @@ export default class MessageSaver extends CronModule {
 
     constructor(client: Discord.Client<boolean>) {
         super(client)
-        this.savings = require("../../data/savings.json")
+        this.savings = require("../../data/backup-sources.json")
     }
 
     onCron() {
@@ -20,7 +20,7 @@ export default class MessageSaver extends CronModule {
 
     saveMessagesFromAll() {
         this.savings.forEach((s) => {
-            this.saveMessagesFromChannelAfter(s.channelID, s.lastID)
+            this.saveMessagesFromChannelAfter(s.channelID, s.firstID)
             console.log(`Done saving - ${s}`)
         })
     }
