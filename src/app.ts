@@ -4,6 +4,7 @@ import Discord from "discord.js"
 import mongoose from "mongoose"
 import dbConfig from "../config/database.json"
 import BotInitialization from "./init"
+import Log from "./log"
 
 const client = new Discord.Client({
     intents: [
@@ -19,15 +20,15 @@ mongoose.connect(
     dbConfig.options,
     (err) => {
         if (err) {
-            console.error(err)
+            Log.error(err)
         } else {
-            console.log("Connected to MongoDB")
+            Log.success("Connected to MongoDB")
         }
     }
 )
 
 client.once("ready", async () => {
-    console.log("POB is ready!")
+    Log.success("POB is ready!")
     const botInit = new BotInitialization(client)
     botInit.init()
 

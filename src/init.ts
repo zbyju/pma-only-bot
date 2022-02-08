@@ -3,6 +3,7 @@ import cron from "node-cron"
 import GMSender from "./modules/gm-module/gm-sender"
 import BatChestSender from "./modules/bat-chest-module/bat-chest-sender"
 import MessageSaver from "./modules/message-saver/message-saver"
+import Log from "./log"
 
 export default class BotInitialization {
     client: Discord.Client<boolean>
@@ -33,7 +34,7 @@ export default class BotInitialization {
     }
 
     onMessage(message: Discord.Message<boolean>) {
-        console.log(message.content)
+        Log.debug(message.content)
         this.gmSender.onMessage(message)
         this.batChestSender.onMessage(message)
     }

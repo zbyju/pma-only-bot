@@ -3,6 +3,7 @@ import { fetchMessagesAfter } from "../../fetch/fetchMessages"
 import { saveMessage } from "../../repositories/message-repository"
 import { Saving } from "../../types/message.types"
 import BaseModule from "../base-module"
+import Log from "./../../log"
 
 export default class MessageSaver extends BaseModule {
     savings: Saving[]
@@ -15,7 +16,7 @@ export default class MessageSaver extends BaseModule {
     saveMessagesFromAll() {
         this.savings.forEach((s) => {
             this.saveMessagesFromChannelAfter(s.channelID, s.lastID)
-            console.log(`Done saving - ${s}`)
+            Log.success(`Done saving - ${s}`)
         })
     }
 
@@ -41,7 +42,7 @@ export default class MessageSaver extends BaseModule {
                     try {
                         saveMessage(m)
                     } catch (err) {
-                        console.log(err)
+                        Log.error(err)
                     }
                 })
                 lastID = messages.firstKey()
