@@ -32,3 +32,24 @@ export const saveMessagePOB = (message: POBMessage): Promise<POBMessage> => {
         }
     })
 }
+
+export const getLastMessage = (
+    guildID: string,
+    channelID: string
+): Promise<POBMessage> => {
+    return new Promise((resolve, reject) => {
+        try {
+            MessageModel.findOne({ channel: channelID, guild: guildID })
+                .sort({ postedAt: -1 })
+                .exec((err: CallbackError, m: POBMessage) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(m)
+                    }
+                })
+        } catch (err) {
+            reject(err)
+        }
+    })
+}
