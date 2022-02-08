@@ -2,15 +2,20 @@ import Discord, { TextChannel } from "discord.js"
 import { fetchMessagesAfter } from "../../fetch/fetchMessages"
 import { saveMessage } from "../../repositories/message-repository"
 import { Saving } from "../../types/message.types"
-import BaseModule from "../base-module"
+import CronModule from "../cron-module"
 
-export default class MessageSaver extends BaseModule {
+export default class MessageSaver extends CronModule {
     moduleName = "MessageSaverModule"
     savings: Saving[]
+    schedule: string = "* 5 5 * * *"
 
     constructor(client: Discord.Client<boolean>) {
         super(client)
         this.savings = require("../../data/savings.json")
+    }
+
+    onCron() {
+        this.saveMessagesFromAll()
     }
 
     saveMessagesFromAll() {

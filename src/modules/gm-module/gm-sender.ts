@@ -1,7 +1,7 @@
 import Discord from "discord.js"
-import BaseModule from "../base-module"
+import MessageModule from "../message-module"
 
-export default class GMSender extends BaseModule {
+export default class GMSender extends MessageModule {
     moduleName = "GMSenderModule"
     constructor(client: Discord.Client<boolean>) {
         super(client)

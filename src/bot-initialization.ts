@@ -21,6 +21,7 @@ export default class BotInitialization {
     }
 
     onMessage(message: Discord.Message<boolean>) {
+        console.log(`New message posted: ${message.author.username} - "${message.content}"`);
         this.registerer.messageModules.forEach(m => m.onMessage(message))
     }
 
