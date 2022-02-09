@@ -3,6 +3,7 @@ require("dotenv").config()
 import Discord from "discord.js"
 import mongoose from "mongoose"
 import dbConfig from "../config/database.json"
+import Log from "./log"
 import BotInitialization from "./bot-initialization"
 
 const client = new Discord.Client({
@@ -19,15 +20,15 @@ mongoose.connect(
     dbConfig.options,
     (err) => {
         if (err) {
-            console.error(err)
+            Log.error(err)
         } else {
-            console.log("Connected to MongoDB")
+            Log.success("Connected to MongoDB")
         }
     }
 )
 
 client.once("ready", async () => {
-    console.log("POB is ready!")
+    Log.success("POB is ready!")
     const botInit = new BotInitialization(client)
     botInit.init()
 

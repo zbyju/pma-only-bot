@@ -6,6 +6,7 @@ import {
 } from "../../repositories/message-repository"
 import { BackupSource } from "../../types/message.types"
 import CronModule from "../cron-module"
+import Log from "../../log"
 
 export default class MessageSaver extends CronModule {
     moduleName = "MessageSaverModule"
@@ -56,7 +57,7 @@ export default class MessageSaver extends CronModule {
                     try {
                         await saveMessage(m)
                     } catch (err) {
-                        console.log(err)
+                        Log.error(err)
                     }
                 })
                 lastID = messages.firstKey()
