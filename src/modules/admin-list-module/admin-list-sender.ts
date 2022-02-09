@@ -9,7 +9,7 @@ export default class AdminListSender extends CommandModule {
 
     constructor(client: Discord.Client<boolean>) {
         super(client)
-        this.registerCommand(this.name, this.description)
+        this.registerCommand()
     }
 
     async onCommand(

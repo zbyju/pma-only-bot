@@ -17,22 +17,24 @@ export default abstract class CommandModule extends BaseModule {
         super(client)
     }
 
-    registerCommand(name: string, description: string): void {
-        if (name.includes(" ")) {
-            throw new Error(`Command name '${name}' cannot contain whitespace`)
+    registerCommand(): void {
+        if (this.name.includes(" ")) {
+            throw new Error(
+                `Command name '${this.name}' cannot contain whitespace`
+            )
         }
 
-        const newName = name.toLowerCase()
+        const newName = this.name.toLowerCase()
 
         Log.debug(
             "Registering command name:",
             newName,
             "description:",
-            description
+            this.description
         )
         this.client.application.commands?.create({
             name: newName,
-            description: description,
+            description: this.description,
         })
     }
 
