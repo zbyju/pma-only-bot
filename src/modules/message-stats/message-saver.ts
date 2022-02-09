@@ -7,7 +7,7 @@ import {
 import { BackupSource } from "../../types/message.types"
 import CronModule from "../cron-module"
 import Log from "../../log"
-import MessagesAnalyzer from "./messages-analyzer"
+import MessageAnalyzer from "./message-analyzer"
 
 export default class MessageSaver extends CronModule {
     moduleName = "MessageSaverModule"
@@ -22,7 +22,7 @@ export default class MessageSaver extends CronModule {
     onCron() {
         this.saveMessagesFromAll(() => {
             Log.debug("cb")
-            new MessagesAnalyzer(this.client).onCron()
+            new MessageAnalyzer(this.client).onCron()
         })
     }
 
