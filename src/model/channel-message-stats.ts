@@ -16,6 +16,7 @@ const schema = new Schema<MessageStats>({
                     emotes: [
                         {
                             name: { type: String, required: true },
+                            id: { type: String, required: true },
                             count: { type: String, required: true },
                         },
                     ],
