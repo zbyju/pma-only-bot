@@ -14,7 +14,7 @@ export const saveMessage = (m: Discord.Message) => {
     })
 }
 
-export const saveMessagePOB = (message: POBMessage) => {
+export const saveMessagePOB = (message: POBMessage): Promise<POBMessage> => {
     return new Promise((resolve, reject) => {
         try {
             MessageModel.create(
@@ -22,10 +22,32 @@ export const saveMessagePOB = (message: POBMessage) => {
                 (err: CallbackError, m: POBMessage) => {
                     if (err) {
                         reject(err)
+                    } else {
+                        resolve(m)
                     }
-                    resolve(m)
                 }
             )
+        } catch (err) {
+            reject(err)
+        }
+    })
+}
+
+export const getLastMessage = (
+    guildID: string,
+    channelID: string
+): Promise<POBMessage> => {
+    return new Promise((resolve, reject) => {
+        try {
+            MessageModel.findOne({ channel: channelID, guild: guildID })
+                .sort({ postedAt: -1 })
+                .exec((err: CallbackError, m: POBMessage) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(m)
+                    }
+                })
         } catch (err) {
             reject(err)
         }

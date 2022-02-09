@@ -1,7 +1,7 @@
 import Discord from "discord.js"
-import BaseModule from "../base-module"
+import MessageModule from "../message-module"
 
-export default class BatChestSender extends BaseModule {
+export default class BatChestSender extends MessageModule {
     moduleName = "BatChestModule"
     batchest: Discord.GuildEmoji
 

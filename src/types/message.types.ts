@@ -14,8 +14,8 @@ export interface POBMessage {
     updatedAt?: Date
 }
 
-export interface Saving {
-    lastID: string
+export interface BackupSource {
+    firstID: string
     channelID: string
     guildID: string
 }

@@ -2,7 +2,7 @@ import Discord from "discord.js"
 
 export abstract class AbstractBaseModule {
     client: Discord.Client<boolean>
-    
+
     moduleName = "AbstractBaseModule"
     enabled: boolean
     isWorking: boolean
@@ -20,6 +20,6 @@ export default class BaseModule extends AbstractBaseModule {
     }
 
     static create(client: Discord.Client<boolean>) {
-        return new this(client);
+        return new this(client)
     }
 }

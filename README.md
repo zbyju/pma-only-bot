@@ -17,7 +17,7 @@ You need to create and fill these files before running the bot:
 
 ## Modules
 
-To create a new module you need to create a folder in modules and a class that extends `BaseModule` class (preferably one of the more explicit verion of it - `CommandModule, MessageModule, etc.`).
+To create a new module you need to create a folder in modules and a class that extends `BaseModule` class (preferably one of the more explicit verion of it - `CommandModule, MessageModule, etc.`). Then add the new type of module to the registerer' (`modules/module-registerer.ts`) collection of types (`moduleTypes`). That's it.
 
 - GM - sends gm when someone sends gm
 - BatChest - sends BatChest emote when someone sends a message containing "I heckin love"

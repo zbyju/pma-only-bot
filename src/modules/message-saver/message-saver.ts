@@ -1,23 +1,33 @@
 import Discord, { TextChannel } from "discord.js"
 import { fetchMessagesAfter } from "../../fetch/fetchMessages"
-import { saveMessage } from "../../repositories/message-repository"
-import { Saving } from "../../types/message.types"
-import BaseModule from "../base-module"
-import Log from "./../../log"
+import {
+    getLastMessage,
+    saveMessage,
+} from "../../repositories/message-repository"
+import { BackupSource } from "../../types/message.types"
+import CronModule from "../cron-module"
+import Log from "../../log"
 
-export default class MessageSaver extends BaseModule {
+export default class MessageSaver extends CronModule {
     moduleName = "MessageSaverModule"
-    savings: Saving[]
+    backups: BackupSource[]
+    schedule: string = "* 5 5 * * *"
 
     constructor(client: Discord.Client<boolean>) {
         super(client)
-        this.savings = require("../../data/savings.json")
+        this.backups = require("../../data/backup-sources.json")
+    }
+
+    onCron() {
+        this.saveMessagesFromAll()
     }
 
     saveMessagesFromAll() {
-        this.savings.forEach((s) => {
-            this.saveMessagesFromChannelAfter(s.channelID, s.lastID)
-            Log.success(`Done saving - ${s}`)
+        this.backups.forEach(async (b: BackupSource) => {
+            const lastSavedMessageID: string =
+                (await getLastMessage(b.guildID, b.channelID)).msgId ||
+                b.firstID
+            this.saveMessagesFromChannelAfter(b.channelID, lastSavedMessageID)
         })
     }
 
@@ -30,9 +40,12 @@ export default class MessageSaver extends BaseModule {
         while (true) {
             try {
                 const messages = await fetchMessagesAfter(channel, lastID, 100)
-                if (messages.size === 0) return
+                if (messages.size === 0) {
+                    console.log(`Done saving - ${channel}`)
+                    return
+                }
 
-                messages.forEach((m) => {
+                messages.forEach(async (m) => {
                     if (
                         m.author.bot ||
                         m.system ||
@@ -40,8 +53,9 @@ export default class MessageSaver extends BaseModule {
                         !m.content
                     )
                         return
+
                     try {
-                        saveMessage(m)
+                        await saveMessage(m)
                     } catch (err) {
                         Log.error(err)
                     }

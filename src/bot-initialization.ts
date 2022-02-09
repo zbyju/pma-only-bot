@@ -14,18 +14,21 @@ export default class BotInitialization {
     init() {
         this.initCronJobs()
     }
-    
+
     onCommand(interaction: Discord.Interaction<Discord.CacheType>) {
-        if(!interaction.isCommand()) return;
-        this.registerer.commandModules.forEach(m => m.onCommand(interaction))
+        if (!interaction.isCommand()) return
+        this.registerer.commandModules.forEach((m) => m.onCommand(interaction))
     }
 
     onMessage(message: Discord.Message<boolean>) {
-        this.registerer.messageModules.forEach(m => m.onMessage(message))
+        console.log(
+            `New message posted: ${message.author.username} - "${message.content}"`
+        )
+        this.registerer.messageModules.forEach((m) => m.onMessage(message))
     }
 
     initCronJobs() {
-        this.registerer.cronModules.forEach(m => {
+        this.registerer.cronModules.forEach((m) => {
             cron.schedule(m.schedule, m.onCron)
         })
     }
