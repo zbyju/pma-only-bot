@@ -1,6 +1,7 @@
 import Discord from "discord.js"
 import BaseModule from "./base-module"
 import Log from "./../log"
+import { APIApplicationCommandOption } from "discord-api-types/v9"
 
 export default abstract class CommandModule extends BaseModule {
     moduleName = "CommandModule"
@@ -8,6 +9,8 @@ export default abstract class CommandModule extends BaseModule {
 
     abstract name: string
     abstract description: string
+    abstract hasPermission: boolean
+    abstract options: APIApplicationCommandOption[]
 
     protected get Name(): string {
         return this.name.toLowerCase()
@@ -17,25 +20,37 @@ export default abstract class CommandModule extends BaseModule {
         super(client)
     }
 
-    registerCommand(): void {
+    async registerCommand(): Promise<void> {
         if (this.name.includes(" ")) {
             throw new Error(
                 `Command name '${this.name}' cannot contain whitespace`
             )
         }
 
-        const newName = this.name.toLowerCase()
-
         Log.debug(
             "Registering command name:",
-            newName,
+            this.Name,
             "description:",
             this.description
         )
-        this.client.application.commands?.create({
-            name: newName,
+
+        const guild = this.client.guilds.cache.get(process.env.TEST_GUILD_ID)
+
+        const newCommand = await guild.commands?.create({
+            name: this.Name,
             description: this.description,
+            default_permission: this.hasPermission,
+            options: this.options,
         })
+
+        if (this.hasPermission) {
+            //newCommand.permissions.add()
+            Log.debug("Giving permission")
+        }
+
+        if (newCommand) {
+            Log.debug("Registered command", this.Name)
+        }
     }
 
     abstract onCommand(

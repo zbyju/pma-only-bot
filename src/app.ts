@@ -28,9 +28,9 @@ mongoose.connect(
 )
 
 client.once("ready", async () => {
-    Log.success("POB is ready!")
     const botInit = new BotInitialization(client)
     botInit.init()
+    Log.success("POB is ready!")
 
     client.on("interactionCreate", (interaction) =>
         botInit.onCommand(interaction as Discord.CommandInteraction)

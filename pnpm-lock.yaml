@@ -22,7 +22,6 @@ specifiers:
 
 dependencies:
   chalk: 4.1.2
-  discord-api-types: 0.26.1
   discord.js: 13.6.0
   dotenv: 16.0.0
   mongoose: 6.2.0
@@ -34,6 +33,7 @@ devDependencies:
   '@types/node-emoji': 1.8.1
   '@typescript-eslint/eslint-plugin': 5.10.2_2595c2126aec4d4b6e944b931dabb4c2
   '@typescript-eslint/parser': 5.10.2_eslint@8.8.0+typescript@4.5.5
+  discord-api-types: 0.26.1
   eslint: 8.8.0
   eslint-config-prettier: 8.3.0_eslint@8.8.0
   eslint-plugin-prettier: 4.0.0_43197c8d12d1d439034cfcf65e1c48c2
@@ -625,7 +625,6 @@ packages:
   /discord-api-types/0.26.1:
     resolution: {integrity: sha512-T5PdMQ+Y1MEECYMV5wmyi9VEYPagEDEi4S0amgsszpWY0VB9JJ/hEvM6BgLhbdnKky4gfmZEXtEEtojN8ZKJQQ==}
     engines: {node: '>=12'}
-    dev: false
 
   /discord.js/13.6.0:
     resolution: {integrity: sha512-tXNR8zgsEPxPBvGk3AQjJ9ljIIC6/LOPjzKwpwz8Y1Q2X66Vi3ZqFgRHYwnHKC0jC0F+l4LzxlhmOJsBZDNg9g==}
