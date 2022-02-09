@@ -11,6 +11,8 @@ export const saveMessage = (m: Discord.Message) => {
         guild: m.guildId,
         postedAt: m.createdTimestamp,
         msgId: m.id,
+        ...(m.tts && { tts: m.tts }),
+        ...(m.url && { url: m.url }),
     })
 }
 
