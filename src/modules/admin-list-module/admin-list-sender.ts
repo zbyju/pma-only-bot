@@ -92,7 +92,7 @@ export default class AdminListSender extends CommandModule {
                 .setTitle("Bot Admins")
                 .setTimestamp()
 
-            if (admins.length > 1) {
+            if (admins.length > 0) {
                 for (const admin of admins) {
                     const adminUser = await command.guild.members.fetch({
                         user: admin.user,
