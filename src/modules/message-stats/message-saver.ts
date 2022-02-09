@@ -22,7 +22,7 @@ export default class MessageSaver extends CronModule {
     onCron() {
         this.saveMessagesFromAll(() => {
             Log.debug("cb")
-            new MessageAnalyzer(this.client).onCron()
+            new MessageAnalyzer(this.client).analyze()
         })
     }
 
@@ -30,8 +30,7 @@ export default class MessageSaver extends CronModule {
         await Promise.all(
             this.backups.map(async (b: BackupSource) => {
                 const lastSavedMessageID: string =
-                    (await getLastMessage(b.guildID, b.channelID)).msgId ||
-                    b.firstID
+                    (await getLastMessage(b.channelID)).msgId || b.firstID
                 await this.saveMessagesFromChannelAfter(
                     b.channelID,
                     lastSavedMessageID
