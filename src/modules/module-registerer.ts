@@ -1,4 +1,6 @@
 import Discord from "discord.js"
+import Log from "../log"
+import AdminListSender from "./admin-list-module/admin-list-sender"
 import BaseModule from "./base-module"
 import BatChestSender from "./bat-chest-module/bat-chest-sender"
 import CommandModule from "./command-module"
@@ -12,14 +14,23 @@ export default class ModuleRegisterer {
     cronModules: CronModule[]
     messageModules: MessageModule[]
 
-    moduleTypes: typeof BaseModule[] = [MessageSaver, GMSender, BatChestSender]
+    moduleTypes: typeof BaseModule[] = [
+        MessageSaver,
+        GMSender,
+        BatChestSender,
+        AdminListSender,
+    ]
     modules: BaseModule[]
 
     constructor(client: Discord.Client<boolean>) {
         this.commandModules = []
         this.cronModules = []
         this.messageModules = []
-        this.modules = this.moduleTypes.map((t) => t.create(client))
+        try {
+            this.modules = this.moduleTypes.map((t) => t.create(client))
+        } catch (error) {
+            Log.error(error)
+        }
         this.modules.forEach((m) => this.registerNewModule(m))
     }
 

@@ -33,7 +33,7 @@ client.once("ready", async () => {
     botInit.init()
 
     client.on("interactionCreate", (interaction) =>
-        botInit.onCommand(interaction)
+        botInit.onCommand(interaction as Discord.CommandInteraction)
     )
 
     client.on("messageCreate", (message) => {

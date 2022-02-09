@@ -15,7 +15,7 @@ export default class BotInitialization {
         this.initCronJobs()
     }
 
-    onCommand(interaction: Discord.Interaction<Discord.CacheType>) {
+    onCommand(interaction: Discord.CommandInteraction<Discord.CacheType>) {
         if (!interaction.isCommand()) return
         this.registerer.commandModules.forEach((m) => m.onCommand(interaction))
     }
