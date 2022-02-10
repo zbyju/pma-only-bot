@@ -1,4 +1,4 @@
-import Discord from "discord.js"
+import Discord, { ApplicationCommandPermissionData } from "discord.js"
 import BaseModule from "./base-module"
 import Log from "./../log"
 import { APIApplicationCommandOption } from "discord-api-types/v9"
@@ -11,6 +11,7 @@ export default abstract class CommandModule extends BaseModule {
     abstract description: string
     abstract hasPermission: boolean
     abstract options: APIApplicationCommandOption[]
+    abstract permissions?: ApplicationCommandPermissionData[]
 
     protected get Name(): string {
         return this.name.toLowerCase()
@@ -43,9 +44,15 @@ export default abstract class CommandModule extends BaseModule {
             options: this.options,
         })
 
-        if (this.hasPermission) {
-            //newCommand.permissions.add()
+        if (!this.hasPermission && this.permissions) {
             Log.debug("Giving permission")
+
+            // This is kinda dumb
+            const permissions = this.permissions
+            const permissionResponse = await newCommand.permissions.set({
+                permissions,
+            })
+            Log.debug(permissionResponse)
         }
 
         if (newCommand) {

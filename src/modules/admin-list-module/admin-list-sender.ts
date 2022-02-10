@@ -2,7 +2,11 @@ import {
     APIApplicationCommandOption,
     ApplicationCommandOptionType,
 } from "discord-api-types"
-import Discord, { MessageEmbed } from "discord.js"
+import Discord, {
+    ApplicationCommandPermissionData,
+    MessageEmbed,
+} from "discord.js"
+import { ApplicationCommandPermissionTypes } from "discord.js/typings/enums"
 import CommandModule from "../command-module"
 import Log from "./../../log"
 import {
@@ -40,7 +44,14 @@ export default class AdminListSender extends CommandModule {
             required: false,
         },
     ]
-    hasPermission: boolean = true
+    hasPermission: boolean = false
+    permissions?: ApplicationCommandPermissionData[] = [
+        {
+            type: ApplicationCommandPermissionTypes.ROLE,
+            id: process.env.ADMIN_ROLE_ID,
+            permission: true,
+        },
+    ]
     moduleName: string = "AdminListModule"
     name: string = "admin"
     description: string = "List of bot administrators"

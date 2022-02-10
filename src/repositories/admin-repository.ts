@@ -2,6 +2,7 @@ import { CallbackError } from "mongoose"
 import Discord from "discord.js"
 import { POBAdmin } from "./../types/admin.types"
 import { AdminModel } from "../model/admin"
+import Log from "../log"
 
 export const saveAdminPOB = (admin: POBAdmin): Promise<POBAdmin> => {
     return new Promise((resolve, reject) => {
@@ -22,15 +23,16 @@ export const saveAdminPOB = (admin: POBAdmin): Promise<POBAdmin> => {
 export const removeAdmin = (
     userID: string,
     guildID: string
-): Promise<POBAdmin> => {
+): Promise<boolean> => {
+    Log.debug(userID, guildID)
     return new Promise((resolve, reject) => {
         try {
-            AdminModel.remove({ user: userID, guild: guildID }).exec(
-                (err: CallbackError, m: POBAdmin) => {
+            AdminModel.deleteOne({ user: userID, guild: guildID }).exec(
+                (err: CallbackError) => {
                     if (err) {
                         reject(err)
                     } else {
-                        resolve(m)
+                        resolve(true)
                     }
                 }
             )
