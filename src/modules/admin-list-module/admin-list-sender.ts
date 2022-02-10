@@ -8,7 +8,6 @@ import Discord, {
 } from "discord.js"
 import { ApplicationCommandPermissionTypes } from "discord.js/typings/enums"
 import CommandModule from "../command-module"
-import Log from "./../../log"
 import {
     getAllAdmins,
     removeAdmin,
@@ -83,6 +82,7 @@ export default class AdminListSender extends CommandModule {
                 user: user.id,
                 added: new Date(),
             })
+
             if (added) {
                 await command.reply({
                     content: `Added admin ${user.username}`,
@@ -124,7 +124,7 @@ export default class AdminListSender extends CommandModule {
                 ephemeral: true,
             })
         } else if (action == "remove") {
-            const remove = await removeAdmin(command.guildId, user.id)
+            const remove = await removeAdmin(user.id, command.guildId)
             if (remove) {
                 await command.reply({
                     content: `Removed admin ${user.username}`,

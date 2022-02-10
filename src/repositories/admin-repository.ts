@@ -24,7 +24,6 @@ export const removeAdmin = (
     userID: string,
     guildID: string
 ): Promise<boolean> => {
-    Log.debug(userID, guildID)
     return new Promise((resolve, reject) => {
         try {
             AdminModel.deleteOne({ user: userID, guild: guildID }).exec(
