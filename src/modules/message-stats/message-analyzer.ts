@@ -6,8 +6,15 @@ import BaseModule from "../base-module"
 import mongoose, { Types } from "mongoose"
 import { getMessageStatsHeaderByChannel } from "../../repositories/message-stats-repository"
 import { getMessagesByChannel } from "../../repositories/message-repository"
-import { DailyStat } from "../../types/stats.types"
-import { getEmotesFromMessage } from "../../utils/message-parser"
+import { DailyAnalyzedMessageResult, DailyStat } from "../../types/stats.types"
+import {
+    getEmotesFromMessage,
+    getUserTagsFromMessage,
+} from "../../utils/message-parser"
+import {
+    emotesToEmoteCounts,
+    userTagsToUserTagCounts,
+} from "../../utils/stats/conversions"
 
 export default class MessageAnalyzer extends BaseModule {
     moduleName = "MessagesAnalyzerModule"
@@ -35,16 +42,41 @@ export default class MessageAnalyzer extends BaseModule {
         })
     }
 
+    private splitByDate(dailyResults: DailyAnalyzedMessageResult[]) {
+        let dailyStats: DailyStat[] = []
+        dailyStats.forEach(s => {
+            const findExisting = dailyStats.find(x => x.date === s.postedAt)
+            if(findExisting === undefined) {
+                dailyStats.push({
+                    date: 
+                }])
+            }
+        })
+    }
+
+    private splitByUser(dailyResults: DailyAnalyzedMessageResult[]) {
+        let users = []
+        dailyResults.forEach()
+    }
+
     async analyzeAll(channelID: string) {
         const allMessages = await getMessagesByChannel(channelID)
-        allMessages.forEach((m) => this.analyzeMessageDaily(m))
+        const dailyStats = this.reduceToDailyStats(
+            allMessages.map((m) => this.analyzeMessageDaily(m))
+        )
     }
 
     async analyzeFrom(channelID: string, lastAnalyzedMessage: Types.ObjectId) {}
 
-    analyzeMessageDaily(message: POBMessage): any {
+    analyzeMessageDaily(message: POBMessage): DailyAnalyzedMessageResult {
         //Get all emotes
         const emotes = getEmotesFromMessage(message.content)
-        const users = []
+        const usertags = getUserTagsFromMessage(message.content)
+        return {
+            postedAt: message.postedAt,
+            userID: message.author,
+            emotes: emotesToEmoteCounts(emotes),
+            userTags: userTagsToUserTagCounts(usertags),
+        }
     }
 }

@@ -7,7 +7,7 @@ const schema = new Schema<MessageStats>({
     channel: { type: String, required: true },
     dailyStats: [
         {
-            date: { type: Date, required: true, unique: true },
+            date: { type: Number, required: true, unique: true },
             users: [
                 {
                     author: { type: String, required: true, unique: true },
@@ -17,7 +17,13 @@ const schema = new Schema<MessageStats>({
                         {
                             name: { type: String, required: true },
                             id: { type: String, required: true },
-                            count: { type: String, required: true },
+                            count: { type: Number, required: true },
+                        },
+                    ],
+                    userTags: [
+                        {
+                            id: { type: String, required: true },
+                            count: { type: Number, required: true },
                         },
                     ],
                 },

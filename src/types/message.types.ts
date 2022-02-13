@@ -24,3 +24,7 @@ export interface Emote {
     name: string
     id: string
 }
+
+export interface UserTag {
+    id: string
+}

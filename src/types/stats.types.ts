@@ -1,4 +1,5 @@
 import { Types } from "mongoose"
+import { Emote, UserTag } from "./message.types"
 
 export interface MessageStats extends MessageStatsHeaders {
     dailyStats: DailyStat[]
@@ -12,19 +13,29 @@ export interface MessageStatsHeaders {
 }
 
 export interface DailyStat {
-    date: Date
+    date: number
     users: [
         {
             author: string
             total: number
             activeMinutes: number
-            emotes: [
-                {
-                    name: string
-                    id: string
-                    count: string
-                }
-            ]
+            emotes: EmoteCounts[]
+            userTags: UserTagCounts[]
         }
     ]
+}
+
+export interface EmoteCounts extends Emote {
+    count: number
+}
+
+export interface UserTagCounts extends UserTag {
+    count: number
+}
+
+export interface DailyAnalyzedMessageResult {
+    postedAt: number
+    userID: string
+    emotes: EmoteCounts[]
+    userTags: UserTagCounts[]
 }
