@@ -5,7 +5,7 @@ import CommandModule from "./command-module"
 import CronModule from "./cron-module"
 import GMSender from "./gm-module/gm-sender"
 import MessageModule from "./message-module"
-import MessageSaver from "./message-saver/message-saver"
+import MessageSaver from "./message-stats/message-saver"
 
 export default class ModuleRegisterer {
     commandModules: CommandModule[]

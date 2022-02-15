@@ -7,6 +7,7 @@ import {
 import { BackupSource } from "../../types/message.types"
 import CronModule from "../cron-module"
 import Log from "../../log"
+import MessageAnalyzer from "./message-analyzer"
 
 export default class MessageSaver extends CronModule {
     moduleName = "MessageSaverModule"
@@ -19,16 +20,24 @@ export default class MessageSaver extends CronModule {
     }
 
     onCron() {
-        this.saveMessagesFromAll()
+        this.saveMessagesFromAll(() => {
+            Log.debug("cb")
+            new MessageAnalyzer(this.client).analyze()
+        })
     }
 
-    saveMessagesFromAll() {
-        this.backups.forEach(async (b: BackupSource) => {
-            const lastSavedMessageID: string =
-                (await getLastMessage(b.guildID, b.channelID)).msgId ||
-                b.firstID
-            this.saveMessagesFromChannelAfter(b.channelID, lastSavedMessageID)
-        })
+    async saveMessagesFromAll(cb: CallableFunction) {
+        await Promise.all(
+            this.backups.map(async (b: BackupSource) => {
+                const lastSavedMessageID: string =
+                    (await getLastMessage(b.channelID)).msgId || b.firstID
+                await this.saveMessagesFromChannelAfter(
+                    b.channelID,
+                    lastSavedMessageID
+                )
+            })
+        )
+        cb()
     }
 
     async saveMessagesFromChannelAfter(channelID: string, after: string) {
@@ -41,7 +50,7 @@ export default class MessageSaver extends CronModule {
             try {
                 const messages = await fetchMessagesAfter(channel, lastID, 100)
                 if (messages.size === 0) {
-                    console.log(`Done saving - ${channel}`)
+                    Log.info(`Done saving - ${channel}`)
                     return
                 }
 
@@ -62,7 +71,7 @@ export default class MessageSaver extends CronModule {
                 })
                 lastID = messages.firstKey()
             } catch (err) {
-                console.error(err)
+                Log.error(err)
                 return
             }
         }
