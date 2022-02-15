@@ -1,28 +1,24 @@
 import { Types } from "mongoose"
 import { Emote, UserTag } from "./message.types"
 
-export interface MessageStats extends MessageStatsHeaders {
-    dailyStats: DailyStat[]
+export interface DailyMessageStats extends DailyMessageStatsHeaders {
+    statsPerUser: StatsPerUser[]
 }
 
-export interface MessageStatsHeaders {
+export interface DailyMessageStatsHeaders {
     _id?: Types.ObjectId
     lastAnalyzedMessage: Types.ObjectId
     guild: string
     channel: string
+    date: number
 }
 
-export interface DailyStat {
-    date: number
-    users: [
-        {
-            author: string
-            total: number
-            activeMinutes: number
-            emotes: EmoteCounts[]
-            userTags: UserTagCounts[]
-        }
-    ]
+export interface StatsPerUser {
+    author: string
+    total: number
+    activeMinutes: number
+    emotes: EmoteCounts[]
+    userTags: UserTagCounts[]
 }
 
 export interface EmoteCounts extends Emote {
