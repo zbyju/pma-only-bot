@@ -8,30 +8,30 @@ import MessageModule from "./message-module"
 import MessageSaver from "./message-saver/message-saver"
 
 export default class ModuleRegisterer {
-    commandModules: CommandModule[]
-    cronModules: CronModule[]
-    messageModules: MessageModule[]
+  commandModules: CommandModule[]
+  cronModules: CronModule[]
+  messageModules: MessageModule[]
 
-    moduleTypes: typeof BaseModule[] = [MessageSaver, GMSender, BatChestSender]
-    modules: BaseModule[]
+  moduleTypes: typeof BaseModule[] = [MessageSaver, GMSender, BatChestSender]
+  modules: BaseModule[]
 
-    constructor(client: Discord.Client<boolean>) {
-        this.commandModules = []
-        this.cronModules = []
-        this.messageModules = []
-        this.modules = this.moduleTypes.map((t) => t.create(client))
-        this.modules.forEach((m) => this.registerNewModule(m))
+  constructor(client: Discord.Client<boolean>) {
+    this.commandModules = []
+    this.cronModules = []
+    this.messageModules = []
+    this.modules = this.moduleTypes.map((t) => t.create(client))
+    this.modules.forEach((m) => this.registerNewModule(m))
+  }
+
+  registerNewModule(module: BaseModule) {
+    if (module instanceof CommandModule) {
+      this.commandModules.push(module)
     }
-
-    registerNewModule(module: BaseModule) {
-        if (module instanceof CommandModule) {
-            this.commandModules.push(module)
-        }
-        if (module instanceof CronModule) {
-            this.cronModules.push(module)
-        }
-        if (module instanceof MessageModule) {
-            this.messageModules.push(module)
-        }
+    if (module instanceof CronModule) {
+      this.cronModules.push(module)
     }
+    if (module instanceof MessageModule) {
+      this.messageModules.push(module)
+    }
+  }
 }
