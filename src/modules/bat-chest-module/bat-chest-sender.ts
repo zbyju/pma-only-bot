@@ -1,5 +1,6 @@
 import Discord from "discord.js"
 import MessageModule from "../message-module"
+import { isBatchestable } from "./bat-chest-logic"
 
 export default class BatChestSender extends MessageModule {
     moduleName = "BatChestModule"
@@ -16,11 +17,7 @@ export default class BatChestSender extends MessageModule {
 
     onMessage(message: Discord.Message<boolean>) {
         if (!this.batchest) return
-        if (
-            message.content.trim().toLowerCase().includes("i") &&
-            message.content.trim().toLowerCase().includes("heckin") &&
-            message.content.trim().toLowerCase().includes("love")
-        ) {
+        if (isBatchestable(message.content)) {
             message.reply(`<:${this.batchest.name}:${this.batchest.id}>`)
         }
     }
