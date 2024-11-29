@@ -1,10 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { DiscordConfigService } from './discord-config.service';
+import { DiscordModule } from '@discord-nestjs/core';
+import { ConfigModule } from '@nestjs/config';
+import { BotSlashCommandsModule } from './bot-slash-commands.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot(),
+    DiscordModule.forRootAsync({
+      useClass: DiscordConfigService,
+    }),
+    BotSlashCommandsModule,
+  ],
 })
 export class AppModule {}
