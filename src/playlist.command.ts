@@ -9,7 +9,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class PlaylistCommand {
   @Handler()
-  onPlaylist(interaction: CommandInteraction): string {
+  onPlaylist(_interaction: CommandInteraction): string {
     return 'List with music...';
   }
 }
