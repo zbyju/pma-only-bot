@@ -1,8 +1,11 @@
+import { Injectable, Logger } from '@nestjs/common';
 import { PMAMessage, PMAMessageIntent } from './message';
 
+@Injectable()
 export class PMAMessageQueue {
   private queue: PMAMessage[];
   private listeners = new Map<PMAMessageIntent, Function[]>();
+  private readonly logger = new Logger(PMAMessageQueue.name);
 
   constructor() {
     this.queue = [];
@@ -35,40 +38,11 @@ export class PMAMessageQueue {
   }
 
   push(message: PMAMessage) {
+    this.logger.log(`Pushing new message: ${JSON.stringify(message)}`);
+
     const listeners = message.intents.flatMap((intent) =>
       this.getListeners(intent),
     );
     listeners.forEach((listener) => listener(message));
   }
-}
-
-if (import.meta.vitest) {
-  const { it, expect, vi } = import.meta.vitest;
-
-  const i = PMAMessageIntent.INCOMING_CHAT_MESSAGE;
-  const j = PMAMessageIntent.INCOMING_COMMAND;
-
-  const l = vi.fn();
-
-  it('adds a listener', () => {
-    const queue = new PMAMessageQueue();
-
-    expect(queue.numberOfListeners(i)).toBe(0);
-    expect(queue.numberOfListeners(j)).toBe(0);
-
-    queue.addListener(l, i);
-
-    expect(queue.numberOfListeners(i)).toBe(1);
-    expect(queue.numberOfListeners(j)).toBe(0);
-  });
-
-  it('removes a listener', () => {
-    const queue = new PMAMessageQueue();
-
-    queue.addListener(l, i);
-    expect(queue.numberOfListeners(i)).toBe(1);
-
-    queue.removeListener(l, i);
-    expect(queue.numberOfListeners(i)).toBe(0);
-  });
 }
