@@ -14,12 +14,15 @@ export class DiscordConfigService implements DiscordOptionsFactory {
       throw new Error('DISCORD_TOKEN is not set');
     }
 
-    console.log(token);
-
     return {
       token,
       discordClientOptions: {
-        intents: [GatewayIntentBits.Guilds],
+        intents: [
+          GatewayIntentBits.Guilds,
+          GatewayIntentBits.MessageContent,
+          GatewayIntentBits.GuildMessages,
+          GatewayIntentBits.GuildMembers,
+        ],
       },
     };
   }

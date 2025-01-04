@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
     "declaration": true,
+    "declarationMap": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ESNext",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
@@ -18,5 +20,8 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "useDefineForClassFields": true,
+    "types": [
+      "vitest/importMeta"
+    ],
   }
 }
