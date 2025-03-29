@@ -1,6 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Once, InjectDiscordClient } from '@discord-nestjs/core';
-import { Client } from 'discord.js';
+import { Injectable, Logger } from "@nestjs/common";
+import { Once, InjectDiscordClient } from "@discord-nestjs/core";
+import type { Client } from "discord.js";
 
 @Injectable()
 export class BotGateway {
@@ -11,7 +11,7 @@ export class BotGateway {
     private readonly client: Client,
   ) {}
 
-  @Once('ready')
+  @Once("ready")
   onReady() {
     this.logger.log(`Bot ${this.client.user?.tag} was started!`);
   }
