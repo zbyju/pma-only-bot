@@ -19,6 +19,6 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "useDefineForClassFields": true,
-    "types": ["vitest/importMeta"]
+    "types": ["vitest/globals", "vitest/importMeta"]
   }
 }

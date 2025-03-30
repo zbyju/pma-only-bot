@@ -1,7 +1,7 @@
-import { Entity, type PropsWithId } from "./entity";
+import { DomainObject } from "./domain-object";
 
-export abstract class Aggregate<T extends PropsWithId> extends Entity<T> {
+export abstract class Aggregate<T> extends DomainObject {
   constructor(public readonly x: T) {
-    super(x);
+    super();
   }
 }
